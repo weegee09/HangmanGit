@@ -1,6 +1,8 @@
+//Paolo R
+//Draws ascii hangman or returns a graphic depending on the amount of wrong guesses
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,12 +13,16 @@ public class DrawHangMan
 	{
 		String res = "";
 		if(wrongGuesses>0) res += "  ,-----.\n /       \\\n(         )\n \\       /\n  `--.--'\n"; //drawhead
-		if(wrongGuesses>4)
+		if(wrongGuesses>3)
 			res += "   ,'|`,\n  ,' | `,\n /   |   \\\n<    '    >\n"; //both arms + torso
-		else if(wrongGuesses>3)
-			res += "   ,'|\n  ,' |\n /   |\n<    '\n"; //left arm + torso
 		else if(wrongGuesses>2)
+			res += "   ,'|\n  ,' |\n /   |\n<    '\n"; //left arm + torso
+		else if(wrongGuesses>1)
 			res += "     |\n     |\n     |\n     |\n"; //just torso
+		if(wrongGuesses>4)
+		    res += "     X\n    / \\\n   /   \\\n  /     \\\n /       \\\n/         \\"; //both legs
+		else if(wrongGuesses>5)
+			res +="     X\n    /\n   /\n  /\n /\n/"; //just left leg
 		return res;
 	}
 	/*
@@ -36,15 +42,12 @@ public class DrawHangMan
  /       \
 /         \
 	*/
-	public Image getImage(int wrongGuesses)
+	public ImageIcon getImage(int wrongGuesses)
 	{
-		Image man = null;
+		ImageIcon man = null;
 
-		try {
-			man = ImageIO.read(new File("./man" + wrongGuesses + ".jpg")); //man0.jpg to man6.jpg
-			return man;
-		}catch (IOException e){
-			return null;
-		}
+		man = new ImageIcon("./man" + wrongGuesses + ".jpg"); //returns man0.jpg to man6.jpg
+		return man;
+
 	}
 }
