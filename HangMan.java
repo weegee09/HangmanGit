@@ -1,65 +1,66 @@
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import java.io.File;
+import java.io.IOException;
+
 //Max Paul
 //Hangman
 public class HangMan
 {
-	String word, wrong, reveal;
-	char letter;
-	int timesWrong;
-	boolean won;
+	private String word, wrong, reveal;
+	private char letter;
+	private int timesWrong;
+	private DictionaryBook dict;
+	private DrawHangMan draw;
+
+
+	public HangMan()
+	{
+		dict = new DictionaryBook();
+		draw = new DrawHangMan();
+		wrong = "";
+		reveal = "";
+		letter = ' ';
+		timesWrong = 0;
+		newWord();
+	}
 
 	public void guessLetter(char guess)//checks the letter and either adds it to the wordSoFar or adds it to the incorrect guesses
 	{
 		String updated = "";
-		int lettersChecked = 0;
-		boolean yesOrNo = true;
+		boolean letterWithin = false;
+		char[] chars = reveal.toCharArray();
 		for(int i = 0; i<word.length(); i++)
 		{
-			lettersChecked ++;
 			if(word.charAt(i) == guess)
 			{
-				lettersChecked = 0;
-				for(int j = 0; j<i; j++)
-				{
-					updated+=reveal.charAt(i);
-				}
-				updated+=guess;
-				for(int k = i; k<word.length(); k++)
-				{
-					updated +=reveal.charAt(i);
-				}
-			reveal = updated;
+			    chars[i] = word.charAt(i);
+			    letterWithin = true;
 			}
 		}
-		if(lettersChecked == word.length()-1)
-		{
-			yesOrNo = false;
-		}
 
-		if(yesOrNo == false)
+		if(!letterWithin)
 		{
-			wrong += guess;
+			wrong+=guess;
 			timesWrong++;
 		}
+		reveal = String.valueOf(chars);
+	}
 
-	}
-	public void guessWord(String guess)//no penalty for getting it wrong, but that does not need to be the case later
-	{
-		if(guess == word)
-			won = true;
-	}
 	public String getIncorrectLetters()
 	{
 		return wrong;
 	}
 	public void newWord()//gets a new word and then changes it to dashes (computer becomes --------)
 	{
-		word = "temp";//Dictionary.getRandomWord();
-		String blank = "";
-		reveal = blank;
+		word = dict.getRandomWord();
+		reveal = "";
 		for(int i = 0; i<word.length(); i++)
 		{
 			reveal+= "-";
 		}
+		timesWrong = 0;
 	}
 	String getWordSoFar()
 	{
@@ -73,20 +74,30 @@ public class HangMan
 	{
 		return timesWrong;
 	}
+	public boolean lose()
+	{
+		if(timesWrong >= 6)
+			return true;
+		return false;
+	}
 	public boolean win()
 	{
-		return won;
+		if(reveal.equals(word))
+		{
+			return true;
+		}
+		return false;
 	}
-	/*
+
 	public String consoleDrawing()
 	{
-		return DrawHangMan.getStringDrawing();
+		return draw.getStringDrawing(timesWrong);
 	}
-	public Image guiDrawing();
+	public ImageIcon guiDrawing()
 	{
-		return DrawHangMan.getImage();
+		return draw.getImage(timesWrong);
 	}
-	*/
+
 
 
 }
