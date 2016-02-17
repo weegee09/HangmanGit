@@ -7,44 +7,48 @@ public class HangmanRunner
 {
 	public static void main(String[] args)
 	{
+		Scanner sc = new Scanner(System.in);
 		HangMan man = new HangMan();
 		String result;
+		String guess = "";
 		String title = "\t\t\t\t~~HangMan~~";
 		String dashes;
 		String incorrect;
-		String word;
+		String word = man.getWord();
 		String drawing;
 		int incorrectGuesses = 0;
 		boolean hasWon = false;
 		while(hasWon == false)
 		{
+			result = "";
 			dashes = man.getWordSoFar();
 			incorrect = man.getIncorrectLetters();
-			word = man.getWord();
-			drawing = "\nWaiting on Paolo Got me like\n";//man.consoleDrawing();
+			drawing = man.consoleDrawing();
 			incorrectGuesses = man.getAmtIncorrectGuesses();
 			hasWon = man.win();
-			Picture(title,dashes,incorrect,word,drawing,incorrectGuesses,hasWon);
-		}
-	}
-	public static void Picture(String title, String dashes, String incorrect,String word,String drawing,int incorrectGuesses,boolean hasWon)
-	{
-		HangMan man = new HangMan();
-		String guess = "";
-		Scanner sc = new Scanner(System.in);
-		String result = "";
-		result += title + "\nWord: " + dashes + "\nIncorrect Letters: " + incorrect;
-		result += "\t\t\t\t\tNumber Incorrect: " + incorrectGuesses + "\n" + drawing + "\nYour Guess: " ;
+			result += title + "\nWord: " + dashes + "\nIncorrect Letters: " + incorrect;
+			result += "\t\t\t\t\tNumber Incorrect: " + incorrectGuesses + "\n" + drawing + "\nYour Guess: " ;
+			System.out.print(result);
+			guess = sc.nextLine();
 
-		System.out.print(result);
-		guess = sc.nextLine();
+			if(guess.length() == 0)
+				guess = "z";
 
-		if(guess.length() > 1)
-			man.guessWord(guess);
-		else
 			man.guessLetter(guess.charAt(0));
+			for(int i = 0; i < 100; i++)
+				System.out.println();
 
-		result += guess;
+			if(incorrectGuesses == 6)
+				hasWon = true;
+			if(word.equals(dashes))
+				hasWon = true;
+		}
+		if(hasWon == true && incorrectGuesses < 6)
+			System.out.println("***You Win***\nWord Was: " + word);
+		else
+			System.out.println("***You Lose***\nWord Was: " + word);
+		System.out.println();
 
 	}
+
 }
