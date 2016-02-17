@@ -1,9 +1,4 @@
 import java.awt.Image;
-import java.awt.Graphics;
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import java.io.File;
-import java.io.IOException;
 
 public interface IDrawHangMan
 {

@@ -7,48 +7,44 @@ public class HangmanRunner
 {
 	public static void main(String[] args)
 	{
-		Scanner sc = new Scanner(System.in);
 		HangMan man = new HangMan();
 		String result;
-		String guess = "";
 		String title = "\t\t\t\t~~HangMan~~";
 		String dashes;
 		String incorrect;
-		String word = man.getWord();
+		String word;
 		String drawing;
 		int incorrectGuesses = 0;
 		boolean hasWon = false;
 		while(hasWon == false)
 		{
-			result = "";
 			dashes = man.getWordSoFar();
 			incorrect = man.getIncorrectLetters();
-			drawing = man.consoleDrawing();
+			word = man.getWord();
+			drawing = "\nWaiting on Paolo Got me like\n";//man.consoleDrawing();
 			incorrectGuesses = man.getAmtIncorrectGuesses();
 			hasWon = man.win();
-			result += title + "\nWord: " + dashes + "\nIncorrect Letters: " + incorrect;
-			result += "\t\t\t\t\tNumber Incorrect: " + incorrectGuesses + "\n" + drawing + "\nYour Guess: " ;
-			System.out.print(result);
-			guess = sc.nextLine();
-
-			if(guess.length() == 0)
-				guess = "z";
-
-			man.guessLetter(guess.charAt(0));
-			for(int i = 0; i < 100; i++)
-				System.out.println();
-
-			if(incorrectGuesses == 6)
-				hasWon = true;
-			if(word.equals(dashes))
-				hasWon = true;
+			Picture(title,dashes,incorrect,word,drawing,incorrectGuesses,hasWon);
 		}
-		if(hasWon == true && incorrectGuesses < 6)
-			System.out.println("***You Win***\nWord Was: " + word);
+	}
+	public static void Picture(String title, String dashes, String incorrect,String word,String drawing,int incorrectGuesses,boolean hasWon)
+	{
+		HangMan man = new HangMan();
+		String guess = "";
+		Scanner sc = new Scanner(System.in);
+		String result = "";
+		result += title + "\nWord: " + dashes + "\nIncorrect Letters: " + incorrect;
+		result += "\t\t\t\t\tNumber Incorrect: " + incorrectGuesses + "\n" + drawing + "\nYour Guess: " ;
+
+		System.out.print(result);
+		guess = sc.nextLine();
+
+		if(guess.length() > 1)
+			man.guessWord(guess);
 		else
-			System.out.println("***You Lose***\nWord Was: " + word);
-		System.out.println();
+			man.guessLetter(guess.charAt(0));
+
+		result += guess;
 
 	}
-
 }
